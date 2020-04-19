@@ -8,7 +8,10 @@ class Modal extends Component {
   //every time when some button for ingredient is pressed. OrderSummary should be updated only when modal is shown.
   //That is why we have following condition
   shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.show !== this.props.show;
+    return (
+      nextProps.show !== this.props.show ||
+      nextProps.children !== this.props.children
+    );
   }
 
   componentWillUpdate() {
