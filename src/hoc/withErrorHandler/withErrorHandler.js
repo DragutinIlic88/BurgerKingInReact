@@ -7,25 +7,37 @@ import Aux from "../Auxuliary/Auxiliary";
 //Component returns class based component which is wrapped component with added error handling functionality.
 const withErrorHandler = (WrappedComponent, axios) => {
   return class extends Component {
-    state = {
-      error: null,
-    };
-
-    //creational lifecycle method which can be used for communication with server
-    componentDidMount() {
+    constructor(props) {
+      super(props);
+      this.state = { error: null };
       //interceptors property is used for global configuration of request and response
-      axios.interceptors.request.use((req) => {
+      this.reqInterceptor = axios.interceptors.request.use((req) => {
         this.setState({ error: null });
         //must return value or it will block further progress
         return req;
       });
-      axios.interceptors.response.use(
+      this.resInterceptor = axios.interceptors.response.use(
         //must return value or will block further progress
         (res) => res,
         (error) => {
           this.setState({ error: error });
         }
       );
+    }
+    // state = {
+    //   error: null,
+    // };
+
+    //creational lifecycle method which can be used for communication with server
+    //NOTE: we moved axios logic to constructor because there was an error inside child component
+    //child component with it lifecycle methods is triggered before componentDidMount
+    // so intercepters will not be set if we put it inside componentDidMount method
+    //componentDidMount() {}
+
+    //if we don't want memory leaks we need to remove interceptors
+    componentWillUnmount() {
+      axios.interceptors.request.eject(this.reqInterceptor);
+      axios.interceptors.response.eject(this.resInterceptor);
     }
 
     errorConfirmedHandler = () => {

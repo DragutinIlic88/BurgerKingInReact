@@ -14,9 +14,10 @@ class Modal extends Component {
     );
   }
 
-  componentWillUpdate() {
-    console.log("[Modal] Will Update");
-  }
+  // This lifecycle method will be deprecated in future releases
+  // componentWillUpdate() {
+  //   console.log("[Modal] Will Update");
+  // }
 
   render() {
     return (
