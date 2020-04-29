@@ -4,6 +4,8 @@ import Button from "../../UI/Button/Button";
 
 import classes from "./CheckoutSummary.module.css";
 
+//function based component which display summary of burger order ,and is responsible for continuation or cancellation
+//of order
 const checkoutSummary = (props) => {
   return (
     <div className={classes.CheckoutSummary}>
@@ -11,10 +13,10 @@ const checkoutSummary = (props) => {
       <div style={{ width: "100%", margin: "auto" }}>
         <Burger ingredients={props.ingredients} />
       </div>
-      <Button btnType="Danger" clicked>
+      <Button btnType="Danger" clicked={props.checkoutCancelled}>
         CANCEL
       </Button>
-      <Button btnType="Success" clicked>
+      <Button btnType="Success" clicked={props.checkoutContinued}>
         CONTINUE
       </Button>
     </div>

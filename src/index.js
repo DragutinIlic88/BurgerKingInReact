@@ -5,6 +5,7 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
+//App component is wrapped with BrowserRouter component , thus enabled routing
 const app = (
   <BrowserRouter>
     <App />
