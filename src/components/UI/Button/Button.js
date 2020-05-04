@@ -7,6 +7,7 @@ const button = (props) => (
     // that way button can be generic and refer to cancel and also to continue
     className={[classes.Button, classes[props.btnType]].join(" ")}
     onClick={props.clicked}
+    disabled={props.disabled}
   >
     {props.children}
   </button>
