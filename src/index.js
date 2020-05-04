@@ -1,15 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import reducer from "./store/reducer";
 
-//App component is wrapped with BrowserRouter component , thus enabled routing
+const store = createStore(reducer);
+
+//App component is wrapped with BrowserRouter component , thus enabled routing.
+// If we need to use redux in combination with routing it is recommended that Provider component be root component
+// So inside provider component we place BrowserRouter component and in it our App component
 const app = (
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
+  <Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>
 );
 
 ReactDOM.render(app, document.getElementById("root"));
