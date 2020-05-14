@@ -9,7 +9,7 @@ import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import axios from "../../axios-orders";
-import * as actionTypes from "../../store/actions";
+import * as actions from "../../store/actions/index";
 
 class BurgerBuilder extends Component {
   // This is conventional way to initialize state in class based component
@@ -23,19 +23,10 @@ class BurgerBuilder extends Component {
   //syntatic sugar of above is
   state = {
     purchasing: false,
-    loading: false,
-    error: false,
   };
 
   componentDidMount() {
-    // axios
-    //   .get("https://react-my-burger-7cb97.firebaseio.com/ingredients.json")
-    //   .then((response) => {
-    //     this.setState({ ingredients: response.data });
-    //   })
-    //   .catch((error) => {
-    //     this.setState({ error: true });
-    //   });
+    this.props.onInitIngredients();
   }
 
   //this method is called for checking if
@@ -121,6 +112,7 @@ class BurgerBuilder extends Component {
     //   search: "?" + queryString,
     // });
 
+    this.props.onInitPurchase();
     this.props.history.push("/checkout");
   };
 
@@ -135,13 +127,10 @@ class BurgerBuilder extends Component {
     }
     let orderSummary = null;
 
-    if (this.state.loading) {
-      orderSummary = <Spinner />;
-    }
     //in case react can't get burger from server , it will return some error status which is catch with axios object;
     //state is set to true in that case and message is displayed to the user.
     //if error is false that means that response still didn't arrived from server so spinner component is placed.
-    let burger = this.state.error ? (
+    let burger = this.props.error ? (
       <p>Ingredients can't be loaded!</p>
     ) : (
       <Spinner />
@@ -187,22 +176,26 @@ class BurgerBuilder extends Component {
   }
 }
 
+//BurgerBuildr container will need some data from state,
+//that data is available with help of this function in props of container
 const mapStateToProps = (state) => {
   return {
-    ings: state.ingredients,
-    price: state.totalPrice,
+    ings: state.burgerBuilder.ingredients,
+    price: state.burgerBuilder.totalPrice,
+    error: state.burgerBuilder.error,
   };
 };
 
+//BurgerBuilder container will need to dispatch some information to the redux reducers
+//This is done with mapDispatchToProps function which returns object where each property
+// is function which can be called from props and passed to it some information
 const mapDispatchToProps = (dispatch) => {
   return {
-    onIngredientAdded: (ingName) =>
-      dispatch({ type: actionTypes.ADD_INGREDIENT, ingredientName: ingName }),
+    onIngredientAdded: (ingName) => dispatch(actions.addIngredient(ingName)),
     onIngredientRemoved: (ingName) =>
-      dispatch({
-        type: actionTypes.REMOVE_INGREDIENT,
-        ingredientName: ingName,
-      }),
+      dispatch(actions.removeIngredient(ingName)),
+    onInitIngredients: () => dispatch(actions.initIngredients()),
+    onInitPurchase: () => dispatch(actions.purchaseInit()),
   };
 };
 
