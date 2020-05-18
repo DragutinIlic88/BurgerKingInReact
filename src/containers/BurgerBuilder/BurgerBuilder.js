@@ -11,7 +11,8 @@ import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import axios from "../../axios-orders";
 import * as actions from "../../store/actions/index";
 
-class BurgerBuilder extends Component {
+//adding export in front of container is for testing purpose
+export class BurgerBuilder extends Component {
   // This is conventional way to initialize state in class based component
   // if we use contructor function which is one of creational lifecycle methods
   // we need to also call super method (which is constructor of Component class)
