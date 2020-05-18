@@ -17,7 +17,10 @@ import orderReducer from "./store/reducers/order";
 import authReducer from "./store/reducers/auth";
 
 //for enabling redux tools on browser with burger app
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers =
+  process.env.NODE_ENV === "development"
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    : null || compose;
 
 //it is good practice to seperate reducer into multiple reducers based on application and then combine thouse reducer into one
 //using combineReducers function
